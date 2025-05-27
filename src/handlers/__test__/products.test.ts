@@ -56,3 +56,43 @@ describe("Products API", () => {
         expect(response.status).not.toBe(200);
     })
 })
+
+
+describe("GET /api/products/:id", () => {
+    it("should return a 404 response for a non-existent product", async () => {
+        const productId = 200
+        const response = await request(server).get(`/api/products/${productId}`)
+        expect(response.status).toBe(404)
+        expect(response.body).toHaveProperty('error')
+        expect(response.body.error).toBe('Producto No Encontrado')
+
+    })
+
+    it("should chekc a valid ID in the URL", async () => {
+        const response = await request(server).get(`/api/products/invalid-id`)
+        expect(response.status).toBe(400)
+        expect(response.body).toHaveProperty('errors')
+        expect(response.body.errors).toHaveLength(1)
+        expect(response.body.errors[0].msg).toBe('ID no válido')
+    })
+    it("get a JSON response for a single product", async () => {
+        const response = await request(server).get(`/api/products/1`)
+        expect(response.status).toBe(200)
+        expect(response.body).toHaveProperty('data')
+    })
+});
+
+describe("PUT /api/products/:id", () => {
+    it("should update a product", async () => {
+        const response = await request(server).put("/api/products/1").send({
+            name: "Cristhian custodio actualizado",
+            price: 200,
+            availability: true
+        });
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('data');
+        expect(response.body.data.name).toBe("Cristhian custodio actualizado");
+        expect(response.body.data.price).toBe(200);
+    })
+})
+
