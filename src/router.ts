@@ -1,19 +1,41 @@
-import { Router } from 'express'
+import { Router } from 'express'
 import { body, param } from 'express-validator'
 import { createProduct, deleteProduct, getProductById, getProducts, updateAvailability, updateProduct } from './handlers/product'
 import { handleInputErrors } from './middleware'
 
 const router = Router()
-
+/**
+ * @swagger
+ * components:
+ *      schemas:
+ *          Product:
+ *              type: object
+ *              properties:
+ *                 id:
+ *                      type: integer
+ *                      description: ID del Producto
+ *                      example: 1
+ *                 name:
+ *                      type: string
+ *                      description: Nombre del Producto
+ *                      example: Producto 1
+ *                 price:
+ *                     type: number
+ *                     description: Precio del Producto
+ *                     example: 100.50
+ * 
+ * 
+ * 
+ */
 // Routing
 router.get('/', getProducts)
-router.get('/:id', 
+router.get('/:id',
     param('id').isInt().withMessage('ID no válido'),
     handleInputErrors,
     getProductById
 )
 
-router.post('/', 
+router.post('/',
     // Validación
     body('name')
         .notEmpty().withMessage('El nombre de Producto no puede ir vacio'),
@@ -25,7 +47,7 @@ router.post('/',
     createProduct
 )
 
-router.put('/:id', 
+router.put('/:id',
     param('id').isInt().withMessage('ID no válido'),
     body('name')
         .notEmpty().withMessage('El nombre de Producto no puede ir vacio'),
@@ -39,13 +61,13 @@ router.put('/:id',
     updateProduct
 )
 
-router.patch('/:id', 
+router.patch('/:id',
     param('id').isInt().withMessage('ID no válido'),
     handleInputErrors,
     updateAvailability
 )
 
-router.delete('/:id', 
+router.delete('/:id',
     param('id').isInt().withMessage('ID no válido'),
     handleInputErrors,
     deleteProduct
