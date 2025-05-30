@@ -1,22 +1,41 @@
-import swaggerJSDoc from "swagger-jsdoc";
-const options: swaggerJSDoc.Options = {
+import swaggerJSDoc from 'swagger-jsdoc'
+import { SwaggerUiOptions } from 'swagger-ui-express'
+
+const options : swaggerJSDoc.Options = {
     swaggerDefinition: {
-        openapi: "3.0.0",
+        openapi: '3.0.2',
         tags: [
             {
-                name: "auth",
-                description: "Authentication related endpoints"
+                name: 'Products',
+                description: 'API operations related to products'
             }
-        ],
+        ], 
         info: {
-            title: "Mi documentacino de curso Udemy",
+            title: 'REST API Node.js / Express / TypeScript',
             version: "1.0.0",
-            description: "API Docs for products"
+            description: "API Docs for Products"
         }
-    },
-    apis: ["./src/router.ts"]
+    }, 
+    apis: ['./src/router.ts']
 }
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(options)
 
-export default swaggerSpec;
+const swaggerUiOptions : SwaggerUiOptions = {
+    customCss : `
+        .topbar-wrapper .link {
+            /*content: url('https://codigoconjuan.com/wp-content/themes/cursosjuan/img/logo.svg');*/
+            height: 80px;
+            width: auto;
+        }
+        .swagger-ui .topbar {
+            background-color: #2b3b45;
+        }
+    `,
+    customSiteTitle: 'Documentación REST API Express / TypeScript'
+}
+
+export default swaggerSpec
+export {
+    swaggerUiOptions
+}
